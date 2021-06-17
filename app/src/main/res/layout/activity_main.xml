@@ -7,7 +7,7 @@
     tools:context="ru.profitsw2000.MainActivity">
 
     <fragment
-        android:id="@+id/notes"
+        android:id="@+id/notes_title"
         android:name="ru.profitsw2000.NotesTitleFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
