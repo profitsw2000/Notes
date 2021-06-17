@@ -1,5 +1,6 @@
 package ru.profitsw2000;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -49,7 +50,7 @@ public class NotesTitleFragment extends Fragment {
             layoutView.addView(textView);
             final int index = i;
 
-/*            textView.setOnClickListener(new View.OnClickListener() {
+            textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[index],
@@ -57,8 +58,16 @@ public class NotesTitleFragment extends Fragment {
                             getResources().getStringArray(R.array.notes_date)[index],
                             getResources().getStringArray(R.array.notes_text)[index]
                             );
+                    showNoteText(currentNote)   ;
                 }
-            });*/
+            });
         }
+    }
+
+    private void showNoteText(MyNotes currentNote) {
+        Intent intent = new Intent()    ;
+        intent.setClass(getActivity(), NotesTextActivity.class) ;
+        intent.putExtra(NoteTextFragment.ARG_NOTE, currentNote) ;
+        startActivity(intent);
     }
 }

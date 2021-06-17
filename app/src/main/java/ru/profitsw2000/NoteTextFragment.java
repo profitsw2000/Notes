@@ -18,7 +18,7 @@ import ru.profitsw2000.notes.R;
  */
 public class NoteTextFragment extends Fragment {
 
-    private static final String ARG_NOTE = "note";
+    public static final String ARG_NOTE = "note";
     private MyNotes currentNote;
 
     public static NoteTextFragment newInstance(MyNotes currentNote) {
