@@ -6,20 +6,20 @@ import android.os.Parcelable;
 public class MyNotes implements Parcelable {
     private String title    ;
     private String description  ;
-    private String data ;
+    private String date ;
     private String text ;
 
-    public MyNotes(String title, String description, String data, String text) {
+    public MyNotes(String title, String description, String date, String text) {
         this.title = title;
         this.description = description;
-        this.data = data;
+        this.date = date;
         this.text = text;
     }
 
     protected MyNotes(Parcel in) {
         title = in.readString();
         description = in.readString();
-        data = in.readString();
+        date = in.readString();
         text = in.readString();
     }
 
@@ -44,7 +44,7 @@ public class MyNotes implements Parcelable {
     }
 
     public String getData() {
-        return data;
+        return date;
     }
 
     public String getText() {
@@ -60,7 +60,7 @@ public class MyNotes implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeString(data);
+        dest.writeString(date);
         dest.writeString(text);
     }
 }
