@@ -43,7 +43,7 @@ public class MyNotes implements Parcelable {
         return description;
     }
 
-    public String getData() {
+    public String getDate() {
         return date;
     }
 

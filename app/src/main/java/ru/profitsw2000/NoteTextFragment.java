@@ -23,6 +23,7 @@ public class NoteTextFragment extends Fragment {
 
     public static NoteTextFragment newInstance(MyNotes currentNote) {
         NoteTextFragment fragment = new NoteTextFragment();
+
         Bundle args = new Bundle();
         args.putParcelable(ARG_NOTE, currentNote);
         fragment.setArguments(args);
@@ -47,9 +48,11 @@ public class NoteTextFragment extends Fragment {
         TextView date = view.findViewById(R.id.date)  ;
         TextView text = view.findViewById(R.id.text)  ;
 
-        description.setText(currentNote.getDescription());
-        date.setText(currentNote.getData());
-        text.setText(currentNote.getText());
+        if (currentNote != null) {
+            description.setText(currentNote.getDescription());
+            date.setText(currentNote.getDate());
+            text.setText(currentNote.getText());
+        }
 
         return view;
     }
