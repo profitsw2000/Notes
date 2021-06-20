@@ -2,6 +2,7 @@ package ru.profitsw2000;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -19,11 +20,16 @@ import android.widget.TextView;
 
 import ru.profitsw2000.notes.R;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class NotesTitleFragment extends Fragment {
 
     private static final String CURRENT_NOTE = "CurrentNote"  ;
     private MyNotes currentNote;
     private boolean isLandscape ;
+    private static final String NameSharedPreference = "SP";
+    private static final String ID = "index";
+    private int currentIndex = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +72,7 @@ public class NotesTitleFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(CURRENT_NOTE, currentNote);
+        saveId();
         super.onSaveInstanceState(outState);
     }
 
@@ -74,7 +80,15 @@ public class NotesTitleFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-        if(savedInstanceState != null){
+        restoreId();
+
+        currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[currentIndex],
+                getResources().getStringArray(R.array.notes_description)[currentIndex],
+                getResources().getStringArray(R.array.notes_date)[currentIndex],
+                getResources().getStringArray(R.array.notes_text)[currentIndex]
+        );
+
+/*        if(savedInstanceState != null){
             currentNote = savedInstanceState.getParcelable(CURRENT_NOTE)   ;
         }
         else {
@@ -83,7 +97,7 @@ public class NotesTitleFragment extends Fragment {
                     getResources().getStringArray(R.array.notes_date)[0],
                     getResources().getStringArray(R.array.notes_text)[0]
             );
-        }
+        }*/
 
         if (isLandscape) {
             showLandNoteText(currentNote)   ;
@@ -121,5 +135,17 @@ public class NotesTitleFragment extends Fragment {
         intent.setClass(getActivity(), NotesTextActivity.class) ;
         intent.putExtra(NoteTextFragment.ARG_NOTE, currentNote) ;
         startActivity(intent);
+    }
+
+    private void saveId(){
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences(NameSharedPreference, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(ID, currentIndex);
+        editor.apply();
+    }
+
+    private void restoreId(){
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences(NameSharedPreference, MODE_PRIVATE);
+        currentIndex = sharedPref.getInt(ID, 0);
     }
 }
