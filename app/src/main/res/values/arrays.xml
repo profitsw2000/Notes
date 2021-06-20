@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notes_title">
+        <item>AVR. Lesson 1.</item>
+        <item>AVR. Lesson 2.</item>
+        <item>AVR. Lesson 3.</item>
+        <item>AVR. Lesson 4.</item>
+        <item>AVR. Lesson 5.</item>
+    </string-array>
+    <string-array name="notes_description">
+        <item>Introducing Atmel Studio</item>
+        <item>I/O ports. Theory.</item>
+        <item>I/O ports. Practice.</item>
+        <item>Bitwise operations.</item>
+        <item>Variables and arithmetic.</item>
+    </string-array>
+    <string-array name="notes_date">
+        <item>19.09.2020</item>
+        <item>20.09.2020</item>
+        <item>21.09.2020</item>
+        <item>22.09.2020</item>
+        <item>28.09.2020</item>
+    </string-array>
+    <string-array name="notes_text">
+        <item>Project creation in Atmel Studio, compilation, firmware, etc. plus project creation in Proteus.</item>
+        <item>A little theory about the I / O ports of AVR microcontrollers - how they are arranged, what they can, how and in which registers they are configured.</item>
+        <item>To demonstrate how to work with ports in the C language, we write a small program in Atmel Studio.</item>
+        <item>Description of bit operations and their application in the C language. Basic operators when performing bitwise operations.</item>
+        <item>A little about variables, their types, properties and arithmetic operations. Storing variables in memory and reading from it.</item>
+    </string-array>
+</resources>
