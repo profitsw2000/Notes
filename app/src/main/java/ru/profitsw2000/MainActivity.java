@@ -1,5 +1,6 @@
 package ru.profitsw2000;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,6 +10,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 import ru.profitsw2000.notes.R;
 
@@ -19,12 +24,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initToolbar()   ;
+        Toolbar toolbar = initToolbar()   ;
+        initDrawer(toolbar) ;
     }
 
-    private void initToolbar() {
+    private void initDrawer(Toolbar toolbar) {
+
+        Toast toast ;
+
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
+
+        // Обработка навигационного меню
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+             @Override
+             public boolean onNavigationItemSelected(MenuItem item) {
+                 int id = item.getItemId();
+
+                 switch(id){
+                     case R.id.about:
+                         Toast.makeText(getApplicationContext(),"About...", Toast.LENGTH_LONG).show();  ;
+                         return true;
+                     case R.id.action_main:
+                         Toast.makeText(getApplicationContext(),"Main Page", Toast.LENGTH_LONG).show();
+                         return true;
+                     case R.id.action_history:
+                         Toast.makeText(getApplicationContext(),"History", Toast.LENGTH_LONG).show();  ;
+                         return true;
+                 }
+                 return false;
+             }
+        });
+    }
+
+    private Toolbar initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar)    ;
         setSupportActionBar(toolbar);
+        return toolbar  ;
     }
 
     @Override
