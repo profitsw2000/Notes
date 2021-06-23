@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDrawer(Toolbar toolbar) {
 
-        Toast toast ;
-
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar,
@@ -49,13 +47,13 @@ public class MainActivity extends AppCompatActivity {
 
                  switch(id){
                      case R.id.about:
-                         Toast.makeText(getApplicationContext(),"About...", Toast.LENGTH_LONG).show();  ;
+                         Toast.makeText(getApplicationContext(),"About...", Toast.LENGTH_SHORT).show();  ;
                          return true;
                      case R.id.action_main:
-                         Toast.makeText(getApplicationContext(),"Main Page", Toast.LENGTH_LONG).show();
+                         Toast.makeText(getApplicationContext(),"Main Page", Toast.LENGTH_SHORT).show();
                          return true;
                      case R.id.action_history:
-                         Toast.makeText(getApplicationContext(),"History", Toast.LENGTH_LONG).show();  ;
+                         Toast.makeText(getApplicationContext(),"History", Toast.LENGTH_SHORT).show();  ;
                          return true;
                  }
                  return false;
@@ -76,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch(id){
             case R.id.action_settings:
-                toast = Toast.makeText(getApplicationContext(),"Settings", Toast.LENGTH_LONG)   ;
+                toast = Toast.makeText(getApplicationContext(),"Settings", Toast.LENGTH_SHORT)   ;
                 toast.show();
                 return true;
             case R.id.action_favorite:
-                toast = Toast.makeText(getApplicationContext(),"Favorite", Toast.LENGTH_LONG)   ;
+                toast = Toast.makeText(getApplicationContext(),"Favorite", Toast.LENGTH_SHORT)   ;
                 toast.show();
                 return true;
         }
