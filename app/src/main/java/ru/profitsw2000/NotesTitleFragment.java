@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,17 +33,34 @@ public class NotesTitleFragment extends Fragment {
     private static final String ID = "index";
     private int currentIndex = 0;
 
+    public static NotesTitleFragment newInstance() {
+        return new NotesTitleFragment() ;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes_title, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes_title, container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_notes)  ;
+        String[] titles = getResources().getStringArray(R.array.notes_title)  ;
+        initRecyclerView(recyclerView, titles)  ;
+        return view ;
+    }
+
+    private void initRecyclerView(RecyclerView recyclerView, String[] titles) {
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext())   ;
+        recyclerView.setLayoutManager(layoutManager);
+
+        NotesAdapter adapter = new NotesAdapter(titles) ;
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initList((LinearLayout) view)  ;
+        //initList((LinearLayout) view)  ;
     }
 
     private void initList(LinearLayout view) {
@@ -72,7 +91,7 @@ public class NotesTitleFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        saveId();
+        //saveId();
         super.onSaveInstanceState(outState);
     }
 
@@ -80,13 +99,13 @@ public class NotesTitleFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-        restoreId();
+        //restoreId();
 
-        currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[currentIndex],
+/*        currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[currentIndex],
                 getResources().getStringArray(R.array.notes_description)[currentIndex],
                 getResources().getStringArray(R.array.notes_date)[currentIndex],
                 getResources().getStringArray(R.array.notes_text)[currentIndex]
-        );
+        );*/
 
 /*        if(savedInstanceState != null){
             currentNote = savedInstanceState.getParcelable(CURRENT_NOTE)   ;
@@ -99,16 +118,16 @@ public class NotesTitleFragment extends Fragment {
             );
         }*/
 
-        if (isLandscape) {
+/*        if (isLandscape) {
             showLandNoteText(currentNote)   ;
-        }
+        }*/
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE  ;
+        //isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE  ;
     }
 
     private void showNoteText(MyNotes currentNote) {

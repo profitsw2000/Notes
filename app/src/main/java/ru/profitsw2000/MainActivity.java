@@ -12,6 +12,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,6 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = initToolbar()   ;
         initDrawer(toolbar) ;
+        addFragment(NotesTitleFragment.newInstance())   ;
+    }
+
+    private void addFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager()   ;
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()    ;
+        fragmentTransaction.add(R.id.notes_title, fragment) ;
+        fragmentTransaction.addToBackStack(null)    ;
+        fragmentTransaction.commit()    ;
     }
 
     private void initDrawer(Toolbar toolbar) {
