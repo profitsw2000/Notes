@@ -11,11 +11,6 @@ import android.widget.TextView;
 
 import ru.profitsw2000.notes.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NoteTextFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NoteTextFragment extends Fragment {
 
     public static final String ARG_NOTE = "note";

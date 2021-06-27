@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()    ;
         fragmentTransaction.replace(R.id.notes_title, fragment) ;
-        fragmentTransaction.addToBackStack(null)    ;
         fragmentTransaction.commit()    ;
     }
 
@@ -63,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
                          Toast.makeText(getApplicationContext(),"About...", Toast.LENGTH_SHORT).show();  ;
                          return true;
                      case R.id.action_main:
-                         Toast.makeText(getApplicationContext(),"Main Page", Toast.LENGTH_SHORT).show();
+                         addFragment(NotesTitleFragment.newInstance());
+                         FragmentManager fragmentManager = getSupportFragmentManager()   ;
+                         fragmentManager.popBackStackImmediate()    ;
                          return true;
                      case R.id.action_history:
                          Toast.makeText(getApplicationContext(),"History", Toast.LENGTH_SHORT).show();  ;

@@ -29,6 +29,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class NotesTitleFragment extends Fragment {
 
+    private MyNotes currentNote ;
+
     public static NotesTitleFragment newInstance() {
         return new NotesTitleFragment() ;
     }
@@ -59,10 +61,25 @@ public class NotesTitleFragment extends Fragment {
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
-                Toast.makeText(getContext(), String.format("%d", position), Toast.LENGTH_SHORT).show();
+                currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[position],
+                        getResources().getIntArray(R.array.pictures)[position],
+                        getResources().getStringArray(R.array.notes_description)[position],
+                        getResources().getStringArray(R.array.notes_date)[position],
+                        getResources().getStringArray(R.array.notes_text)[position]);
+                showNoteText(currentNote)   ;
             }
         });
+    }
+
+    private void showNoteText(MyNotes currentNote) {
+        NoteTextFragment detail = NoteTextFragment.newInstance(currentNote) ;
+
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager() ;
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()    ;
+        fragmentTransaction.replace(R.id.notes_title, detail) ;
+        fragmentTransaction.addToBackStack(null)    ;
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)    ;
+        fragmentTransaction.commit()    ;
     }
 
 }
