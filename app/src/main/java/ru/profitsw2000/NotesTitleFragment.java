@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ru.profitsw2000.notes.R;
 
@@ -48,6 +49,13 @@ public class NotesTitleFragment extends Fragment {
 
         NotesAdapter adapter = new NotesAdapter(titles) ;
         recyclerView.setAdapter(adapter);
+
+        adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(getContext(), ((TextView)view).getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
