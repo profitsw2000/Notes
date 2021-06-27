@@ -43,7 +43,7 @@ public class Source implements CardSource {
 
     @Override
     public MyNotes getMyNotes(int position) {
-        return null;
+        return dataSource.get(position);
     }
 
     public int size(){

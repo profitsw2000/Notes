@@ -8,9 +8,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,23 +39,28 @@ public class NotesTitleFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notes_title, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_notes)  ;
-        String[] titles = getResources().getStringArray(R.array.notes_title)  ;
-        initRecyclerView(recyclerView, titles)  ;
+        CardSource data = new Source(getResources()).init() ;
+        initRecyclerView(recyclerView, data)  ;
         return view ;
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, String[] titles) {
+    private void initRecyclerView(RecyclerView recyclerView, CardSource data) {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext())   ;
         recyclerView.setLayoutManager(layoutManager);
 
-        NotesAdapter adapter = new NotesAdapter(titles) ;
+        final NotesAdapter adapter = new NotesAdapter(data) ;
         recyclerView.setAdapter(adapter);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL)    ;
+        itemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.separator));
+        recyclerView.addItemDecoration(itemDecoration);
 
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), ((TextView)view).getText(), Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getContext(), String.format("%d", position), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -7,17 +7,18 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.profitsw2000.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
-    private String[] notesList   ;
+    private CardSource cardSource   ;
     private OnItemClickListener itemClickListener   ;
 
-    public NotesAdapter(String[] notesList) {
-        this.notesList = notesList;
+    public NotesAdapter(CardSource cardSource) {
+        this.cardSource = cardSource;
     }
 
     @Override
@@ -29,12 +30,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull NotesAdapter.ViewHolder holder, int position) {
-        holder.getTextView().setText(notesList[position]);
+        holder.setData(cardSource.getMyNotes(position));
     }
 
     @Override
     public int getItemCount() {
-        return notesList.length;
+        return cardSource.size();
     }
 
     public void SetOnItemClickListener(OnItemClickListener itemClickListener){
@@ -47,13 +48,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView textView   ;
+        private TextView title   ;
+        private AppCompatImageView image    ;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = (TextView) itemView  ;
+            title = itemView.findViewById(R.id.titleText)   ;
+            image = itemView.findViewById(R.id.imageView)   ;
 
-            textView.setOnClickListener(new View.OnClickListener() {
+            image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(itemClickListener != null) {
@@ -63,8 +66,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             });
         }
 
-        public TextView getTextView() {
-            return textView ;
+        public void setData(MyNotes myNotes){
+            title.setText(myNotes.getTitle());
+            image.setImageResource(myNotes.getPicture());
         }
     }
 
