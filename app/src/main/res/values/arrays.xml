@@ -7,6 +7,13 @@
         <item>AVR. Lesson 4.</item>
         <item>AVR. Lesson 5.</item>
     </string-array>
+    <string-array name="pictures">
+        <item>@drawable/board</item>
+        <item>@drawable/pins</item>
+        <item>@drawable/code</item>
+        <item>@drawable/bitwise</item>
+        <item>@drawable/var</item>
+    </string-array>
     <string-array name="notes_description">
         <item>Introducing Atmel Studio</item>
         <item>I/O ports. Theory.</item>
