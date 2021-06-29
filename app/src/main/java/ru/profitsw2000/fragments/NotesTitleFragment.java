@@ -2,6 +2,7 @@ package ru.profitsw2000.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,8 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import ru.profitsw2000.data.CardSource;
 import ru.profitsw2000.data.MyNotes;
@@ -32,6 +37,9 @@ public class NotesTitleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notes_title, container, false);
+
+        setHasOptionsMenu(true);
+
         RecyclerView recyclerView = view.findViewById(R.id.recycler_notes)  ;
         CardSource data = new Source(getResources()).init() ;
         initRecyclerView(recyclerView, data)  ;
@@ -74,4 +82,22 @@ public class NotesTitleFragment extends Fragment {
         fragmentTransaction.commit()    ;
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if (menu.findItem(R.id.action_add) == null) inflater.inflate(R.menu.main_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_add:
+                Toast.makeText(getContext(), "ADD", Toast.LENGTH_SHORT).show();
+                return true ;
+            case R.id.action_clear:
+                Toast.makeText(getContext(), "CLEAR", Toast.LENGTH_SHORT).show();
+                return true ;
+        }
+        return super.onOptionsItemSelected(item)    ;
+    }
 }
