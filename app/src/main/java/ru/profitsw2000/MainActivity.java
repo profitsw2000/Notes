@@ -18,26 +18,23 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 
 import ru.profitsw2000.fragments.NotesTitleFragment;
+import ru.profitsw2000.nav.Navigation;
 import ru.profitsw2000.notes.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Navigation navigation   ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        navigation = new Navigation(getSupportFragmentManager())    ;
+
         Toolbar toolbar = initToolbar()   ;
         initDrawer(toolbar) ;
-        addFragment(NotesTitleFragment.newInstance())   ;
-    }
-
-    private void addFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager()   ;
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()    ;
-        fragmentTransaction.replace(R.id.notes_title, fragment) ;
-        fragmentTransaction.commit()    ;
+        getNavigation().addFragment(NotesTitleFragment.newInstance(),false)   ;
     }
 
     private void initDrawer(Toolbar toolbar) {
@@ -62,9 +59,8 @@ public class MainActivity extends AppCompatActivity {
                          Toast.makeText(getApplicationContext(),"About...", Toast.LENGTH_SHORT).show();  ;
                          return true;
                      case R.id.action_main:
-                         addFragment(NotesTitleFragment.newInstance());
-                         FragmentManager fragmentManager = getSupportFragmentManager()   ;
-                         fragmentManager.popBackStackImmediate()    ;
+                         getNavigation().addFragment(NotesTitleFragment.newInstance(), false);
+                         getNavigation().clearBackStack();
                          return true;
                      case R.id.action_history:
                          Toast.makeText(getApplicationContext(),"History", Toast.LENGTH_SHORT).show();  ;
@@ -120,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    public Navigation getNavigation(){
+        return navigation   ;
     }
 
 }
