@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import ru.profitsw2000.fragments.NoteTextFragment;
 import ru.profitsw2000.notes.R;
 
 public class NotesTextActivity extends AppCompatActivity {

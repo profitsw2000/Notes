@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import ru.profitsw2000.fragments.NotesTitleFragment;
 import ru.profitsw2000.notes.R;
 
 public class MainActivity extends AppCompatActivity {

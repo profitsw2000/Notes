@@ -1,13 +1,7 @@
-package ru.profitsw2000;
+package ru.profitsw2000.fragments;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,13 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import ru.profitsw2000.data.CardSource;
+import ru.profitsw2000.data.MyNotes;
+import ru.profitsw2000.data.Source;
 import ru.profitsw2000.notes.R;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class NotesTitleFragment extends Fragment {
 
@@ -51,14 +43,14 @@ public class NotesTitleFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext())   ;
         recyclerView.setLayoutManager(layoutManager);
 
-        final NotesAdapter adapter = new NotesAdapter(data) ;
+        final Source.NotesAdapter adapter = new Source.NotesAdapter(data) ;
         recyclerView.setAdapter(adapter);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL)    ;
         itemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
 
-        adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
+        adapter.SetOnItemClickListener(new Source.NotesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[position],

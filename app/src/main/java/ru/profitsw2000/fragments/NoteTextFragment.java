@@ -1,4 +1,4 @@
-package ru.profitsw2000;
+package ru.profitsw2000.fragments;
 
 import android.os.Bundle;
 
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import ru.profitsw2000.data.MyNotes;
 import ru.profitsw2000.notes.R;
 
 public class NoteTextFragment extends Fragment {

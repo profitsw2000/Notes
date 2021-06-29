@@ -1,4 +1,4 @@
-package ru.profitsw2000;
+package ru.profitsw2000.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
