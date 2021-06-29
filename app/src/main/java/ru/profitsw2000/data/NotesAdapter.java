@@ -1,0 +1,94 @@
+package ru.profitsw2000.data;
+
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import ru.profitsw2000.notes.R;
+
+public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
+
+    private CardSource cardSource   ;
+    private OnItemClickListener itemClickListener   ;
+    private final Fragment fragment ;
+
+    public NotesAdapter(CardSource cardSource, Fragment fragment) {
+        this.cardSource = cardSource;
+        this.fragment = fragment;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.setData(cardSource.getMyNotes(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return cardSource.size();
+    }
+
+    public void SetOnItemClickListener(OnItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(View view, int position)   ;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+
+        private TextView title   ;
+        private AppCompatImageView image    ;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.titleText)   ;
+            image = itemView.findViewById(R.id.imageView)   ;
+
+            registerContextMenu(itemView)   ;
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(itemClickListener != null) {
+                        itemClickListener.onItemClick(v, getAdapterPosition());
+                    }
+                }
+            });
+
+            // Обработчик нажатий на картинке
+            image.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    itemView.showContextMenu();
+                    return true;
+                }
+            });
+        }
+
+        private void registerContextMenu(View itemView) {
+            if (fragment != null) {
+                fragment.registerForContextMenu(itemView);
+            }
+        }
+
+        public void setData(MyNotes myNotes){
+            title.setText(myNotes.getTitle());
+            image.setImageResource(myNotes.getPicture());
+        }
+    }
+}

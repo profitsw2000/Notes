@@ -58,65 +58,24 @@ public class Source implements CardSource {
         return dataSource.size();
     }
 
-    public static class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
-
-        private CardSource cardSource   ;
-        private OnItemClickListener itemClickListener   ;
-
-        public NotesAdapter(CardSource cardSource) {
-            this.cardSource = cardSource;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.setData(cardSource.getMyNotes(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return cardSource.size();
-        }
-
-        public void SetOnItemClickListener(OnItemClickListener itemClickListener){
-            this.itemClickListener = itemClickListener;
-        }
-
-        public interface OnItemClickListener{
-            void onItemClick(View view, int position)   ;
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder{
-
-            private TextView title   ;
-            private AppCompatImageView image    ;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                title = itemView.findViewById(R.id.titleText)   ;
-                image = itemView.findViewById(R.id.imageView)   ;
-
-                image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(itemClickListener != null) {
-                            itemClickListener.onItemClick(v, getAdapterPosition());
-                        }
-                    }
-                });
-            }
-
-            public void setData(MyNotes myNotes){
-                title.setText(myNotes.getTitle());
-                image.setImageResource(myNotes.getPicture());
-            }
-        }
-
+    @Override
+    public void deleteNote(int position) {
+        dataSource.remove(position) ;
     }
+
+    @Override
+    public void updateNote(int position, MyNotes myNotes) {
+        dataSource.set(position, myNotes);
+    }
+
+    @Override
+    public void addNote(MyNotes myNotes) {
+        dataSource.add(myNotes) ;
+    }
+
+    @Override
+    public void clearNote() {
+        dataSource.clear();
+    }
+
 }

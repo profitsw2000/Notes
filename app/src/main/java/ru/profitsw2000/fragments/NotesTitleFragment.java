@@ -3,6 +3,7 @@ package ru.profitsw2000.fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import ru.profitsw2000.data.CardSource;
 import ru.profitsw2000.data.MyNotes;
+import ru.profitsw2000.data.NotesAdapter;
 import ru.profitsw2000.data.Source;
 import ru.profitsw2000.notes.R;
 
@@ -51,14 +54,14 @@ public class NotesTitleFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext())   ;
         recyclerView.setLayoutManager(layoutManager);
 
-        final Source.NotesAdapter adapter = new Source.NotesAdapter(data) ;
+        final NotesAdapter adapter = new NotesAdapter(data, this) ;
         recyclerView.setAdapter(adapter);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL)    ;
         itemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
 
-        adapter.SetOnItemClickListener(new Source.NotesAdapter.OnItemClickListener() {
+        adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[position],
@@ -99,5 +102,24 @@ public class NotesTitleFragment extends Fragment {
                 return true ;
         }
         return super.onOptionsItemSelected(item)    ;
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
+                                    @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.main_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_update:
+                return true;
+            case R.id.action_delete:
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 }
