@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import ru.profitsw2000.fragments.AboutFragment;
 import ru.profitsw2000.fragments.NotesTitleFragment;
 import ru.profitsw2000.nav.Navigation;
 import ru.profitsw2000.nav.Publisher;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                  switch(id){
                      case R.id.about:
+                         getNavigation().addFragment(AboutFragment.newInstance(),true);
                          Toast.makeText(getApplicationContext(),"About...", Toast.LENGTH_SHORT).show();  ;
                          return true;
                      case R.id.action_main:
