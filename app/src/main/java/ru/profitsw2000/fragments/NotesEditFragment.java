@@ -123,7 +123,7 @@ public class NotesEditFragment extends Fragment {
             picture = R.drawable.code   ;
         }
 
-        return myNotes  ;
+        return new MyNotes(title, picture, description, date, text)  ;
     }
 
     private void initDatePicker(Date date) {

@@ -45,10 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:calendarViewShown="false"
-            android:datePickerMode="spinner" />
-        <!-- также можно делать режим календаря
-        android:datePickerMode="calendar"
-        и режим отображения календаря в spinner-режиме
-        android:calendarViewShown="true" -->
+            android:datePickerMode="calendar" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

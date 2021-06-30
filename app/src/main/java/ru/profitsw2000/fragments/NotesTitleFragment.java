@@ -1,5 +1,6 @@
 package ru.profitsw2000.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,10 +26,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import ru.profitsw2000.MainActivity;
 import ru.profitsw2000.data.CardSource;
 import ru.profitsw2000.data.MyNotes;
 import ru.profitsw2000.data.NotesAdapter;
 import ru.profitsw2000.data.Source;
+import ru.profitsw2000.nav.Navigation;
+import ru.profitsw2000.nav.Observer;
+import ru.profitsw2000.nav.Publisher;
 import ru.profitsw2000.notes.R;
 
 public class NotesTitleFragment extends Fragment {
@@ -37,10 +42,24 @@ public class NotesTitleFragment extends Fragment {
     private RecyclerView recyclerView   ;
     private CardSource data ;
     private NotesAdapter adapter    ;
+    private Navigation navigation;
+    private Publisher publisher;
+    private boolean moveToLastPosition;
 
 
     public static NotesTitleFragment newInstance() {
         return new NotesTitleFragment() ;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        try {
+            data = new Source(getResources()).init() ;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -50,15 +69,24 @@ public class NotesTitleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notes_title, container, false);
 
         setHasOptionsMenu(true);
-
-        try {
-            data = new Source(getResources()).init() ;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         recyclerView = view.findViewById(R.id.recycler_notes)  ;
         initRecyclerView(recyclerView, data)  ;
         return view ;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity activity = (MainActivity)context;
+        navigation = activity.getNavigation();
+        publisher = activity.getPublisher();
+    }
+
+    @Override
+    public void onDetach() {
+        navigation = null;
+        publisher = null;
+        super.onDetach();
     }
 
     private void initRecyclerView(RecyclerView recyclerView, CardSource data) {
@@ -73,16 +101,15 @@ public class NotesTitleFragment extends Fragment {
         itemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
 
+        if (moveToLastPosition){
+            recyclerView.smoothScrollToPosition(data.size() - 1);
+            moveToLastPosition = false;
+        }
+
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) throws ParseException {
-                Date noteDate = new SimpleDateFormat("dd/MM/yyyy").parse(getResources().getStringArray(R.array.notes_date)[position])  ;
-                currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[position],
-                        getResources().getIntArray(R.array.pictures)[position],
-                        getResources().getStringArray(R.array.notes_description)[position],
-                        noteDate,
-                        getResources().getStringArray(R.array.notes_text)[position]);
-                showNoteText(currentNote)   ;
+                showNoteText(data.getMyNotes(position))   ;
             }
         });
     }
@@ -108,10 +135,19 @@ public class NotesTitleFragment extends Fragment {
 
         switch (item.getItemId()){
             case R.id.action_add:
-                Toast.makeText(getContext(), "ADD", Toast.LENGTH_SHORT).show();
+                navigation.addFragment(NotesEditFragment.newInstance(), true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateNotes(MyNotes myNotes) {
+                        data.addNote(myNotes);
+                        adapter.notifyItemInserted(data.size() - 1);
+                        moveToLastPosition = true;
+                    }
+                });
                 return true ;
             case R.id.action_clear:
-                Toast.makeText(getContext(), "CLEAR", Toast.LENGTH_SHORT).show();
+                data.clearNote();
+                adapter.notifyDataSetChanged();
                 return true ;
         }
         return super.onOptionsItemSelected(item)    ;
@@ -132,12 +168,15 @@ public class NotesTitleFragment extends Fragment {
 
         switch(item.getItemId()) {
             case R.id.action_update:
-                data.updateNote(position, new MyNotes("STM32. Lesson " + (position + 1),
-                        data.getMyNotes(position).getPicture(),
-                        data.getMyNotes(position).getDescription(),
-                        data.getMyNotes(position).getDate(),
-                        data.getMyNotes(position).getText()));
-                adapter.notifyItemChanged(position);
+                navigation.addFragment(NotesEditFragment.newInstance(data.getMyNotes(position)),
+                        true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateNotes(MyNotes myNotes) {
+                        data.updateNote(position, myNotes);
+                        adapter.notifyItemChanged(position);
+                    }
+                });
                 return true;
             case R.id.action_delete:
                 data.deleteNote(position);

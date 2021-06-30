@@ -25,7 +25,7 @@ import ru.profitsw2000.notes.R;
 public class MainActivity extends AppCompatActivity {
 
     private Navigation navigation   ;
-    private Publisher publisher ;
+    private Publisher publisher = new Publisher() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar)    ;
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         return toolbar  ;
     }
 
@@ -117,6 +119,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
         return true;
     }
 
