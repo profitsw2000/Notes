@@ -19,11 +19,13 @@ import com.google.android.material.navigation.NavigationView;
 
 import ru.profitsw2000.fragments.NotesTitleFragment;
 import ru.profitsw2000.nav.Navigation;
+import ru.profitsw2000.nav.Publisher;
 import ru.profitsw2000.notes.R;
 
 public class MainActivity extends AppCompatActivity {
 
     private Navigation navigation   ;
+    private Publisher publisher ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
 
     public Navigation getNavigation(){
         return navigation   ;
+    }
+
+    public Publisher getPublisher() {
+        return publisher    ;
     }
 
 }
