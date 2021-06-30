@@ -22,11 +22,11 @@
         <item>Variables and arithmetic.</item>
     </string-array>
     <string-array name="notes_date">
-        <item>19.09.2020</item>
-        <item>20.09.2020</item>
-        <item>21.09.2020</item>
-        <item>22.09.2020</item>
-        <item>28.09.2020</item>
+        <item>19/09/2020</item>
+        <item>20/09/2020</item>
+        <item>21/09/2020</item>
+        <item>22/09/2020</item>
+        <item>28/09/2020</item>
     </string-array>
     <string-array name="notes_text">
         <item>Project creation in Atmel Studio, compilation, firmware, etc. plus project creation in Proteus.</item>

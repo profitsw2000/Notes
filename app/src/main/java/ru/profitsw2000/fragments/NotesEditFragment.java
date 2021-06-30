@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import ru.profitsw2000.data.MyNotes;
+import ru.profitsw2000.nav.Publisher;
 import ru.profitsw2000.notes.R;
 
 public class NotesEditFragment extends Fragment {

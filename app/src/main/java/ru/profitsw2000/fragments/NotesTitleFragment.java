@@ -21,6 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import ru.profitsw2000.data.CardSource;
 import ru.profitsw2000.data.MyNotes;
 import ru.profitsw2000.data.NotesAdapter;
@@ -30,6 +34,10 @@ import ru.profitsw2000.notes.R;
 public class NotesTitleFragment extends Fragment {
 
     private MyNotes currentNote ;
+    private RecyclerView recyclerView   ;
+    private CardSource data ;
+    private NotesAdapter adapter    ;
+
 
     public static NotesTitleFragment newInstance() {
         return new NotesTitleFragment() ;
@@ -43,8 +51,12 @@ public class NotesTitleFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_notes)  ;
-        CardSource data = new Source(getResources()).init() ;
+        try {
+            data = new Source(getResources()).init() ;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        recyclerView = view.findViewById(R.id.recycler_notes)  ;
         initRecyclerView(recyclerView, data)  ;
         return view ;
     }
@@ -54,7 +66,7 @@ public class NotesTitleFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext())   ;
         recyclerView.setLayoutManager(layoutManager);
 
-        final NotesAdapter adapter = new NotesAdapter(data, this) ;
+        adapter = new NotesAdapter(data, this) ;
         recyclerView.setAdapter(adapter);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL)    ;
@@ -63,11 +75,12 @@ public class NotesTitleFragment extends Fragment {
 
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view, int position) throws ParseException {
+                Date noteDate = new SimpleDateFormat("dd/MM/yyyy").parse(getResources().getStringArray(R.array.notes_date)[position])  ;
                 currentNote = new MyNotes(getResources().getStringArray(R.array.notes_title)[position],
                         getResources().getIntArray(R.array.pictures)[position],
                         getResources().getStringArray(R.array.notes_description)[position],
-                        getResources().getStringArray(R.array.notes_date)[position],
+                        noteDate,
                         getResources().getStringArray(R.array.notes_text)[position]);
                 showNoteText(currentNote)   ;
             }
@@ -114,10 +127,21 @@ public class NotesTitleFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        int position = adapter.getMenuPosition()    ;
+
         switch(item.getItemId()) {
             case R.id.action_update:
+                data.updateNote(position, new MyNotes("STM32. Lesson " + (position + 1),
+                        data.getMyNotes(position).getPicture(),
+                        data.getMyNotes(position).getDescription(),
+                        data.getMyNotes(position).getDate(),
+                        data.getMyNotes(position).getText()));
+                adapter.notifyItemChanged(position);
                 return true;
             case R.id.action_delete:
+                data.deleteNote(position);
+                adapter.notifyItemRemoved(position);
                 return true;
         }
         return super.onContextItemSelected(item);

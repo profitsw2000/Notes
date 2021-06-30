@@ -11,6 +11,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+
 import ru.profitsw2000.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
@@ -18,6 +20,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private CardSource cardSource   ;
     private OnItemClickListener itemClickListener   ;
     private final Fragment fragment ;
+    private int menuPosition    ;
 
     public NotesAdapter(CardSource cardSource, Fragment fragment) {
         this.cardSource = cardSource;
@@ -41,12 +44,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         return cardSource.size();
     }
 
+    public int getMenuPosition() {
+        return menuPosition;
+    }
+
     public void SetOnItemClickListener(OnItemClickListener itemClickListener){
         this.itemClickListener = itemClickListener;
     }
 
     public interface OnItemClickListener{
-        void onItemClick(View view, int position)   ;
+        void onItemClick(View view, int position) throws ParseException;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -65,7 +72,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     if(itemClickListener != null) {
-                        itemClickListener.onItemClick(v, getAdapterPosition());
+                        try {
+                            itemClickListener.onItemClick(v, getAdapterPosition());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
@@ -75,6 +86,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 @Override
                 public boolean onLongClick(View v) {
                     itemView.showContextMenu();
+                    menuPosition = getLayoutPosition()  ;
                     return true;
                 }
             });
@@ -82,6 +94,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
         private void registerContextMenu(View itemView) {
             if (fragment != null) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        menuPosition = getLayoutPosition();
+                        return false;
+                    }
+                });
                 fragment.registerForContextMenu(itemView);
             }
         }
