@@ -1,8 +1,12 @@
 package ru.profitsw2000.data;
 
+import java.text.ParseException;
+
 import ru.profitsw2000.data.MyNotes;
 
 public interface CardSource {
+
+    CardSource init(CardSourceResponse cardSourceResponse) throws ParseException;
 
     MyNotes getMyNotes(int position)    ;
 

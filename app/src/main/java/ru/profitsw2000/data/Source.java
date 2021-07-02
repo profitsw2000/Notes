@@ -29,7 +29,7 @@ public class Source implements CardSource {
         this.resources = resources;
     }
 
-    public Source init() throws ParseException {
+    public Source init(CardSourceResponse cardSourceResponse) throws ParseException {
         String[] titles = resources.getStringArray(R.array.notes_title);
         int[] pictures = getImageArray();
         String[] descriptions = resources.getStringArray(R.array.notes_description) ;
@@ -41,6 +41,11 @@ public class Source implements CardSource {
             dates1[i] = new SimpleDateFormat("dd/MM/yyyy").parse(dates[i])  ;
             dataSource.add(new MyNotes(titles[i], pictures[i], descriptions[i], dates1[i], text[i]));
         }
+
+        if (cardSourceResponse != null) {
+            cardSourceResponse.initialized(this);
+        }
+
         return this;
     }
 
