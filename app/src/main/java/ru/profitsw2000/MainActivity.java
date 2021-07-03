@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,26 +17,27 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import ru.profitsw2000.fragments.AboutFragment;
+import ru.profitsw2000.fragments.NotesTitleFragment;
+import ru.profitsw2000.nav.Navigation;
+import ru.profitsw2000.nav.Publisher;
 import ru.profitsw2000.notes.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Navigation navigation   ;
+    private Publisher publisher = new Publisher() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        navigation = new Navigation(getSupportFragmentManager())    ;
+
         Toolbar toolbar = initToolbar()   ;
         initDrawer(toolbar) ;
-        addFragment(NotesTitleFragment.newInstance())   ;
-    }
-
-    private void addFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager()   ;
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()    ;
-        fragmentTransaction.replace(R.id.notes_title, fragment) ;
-        fragmentTransaction.commit()    ;
+        getNavigation().addFragment(NotesTitleFragment.newInstance(),false)   ;
     }
 
     private void initDrawer(Toolbar toolbar) {
@@ -59,12 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
                  switch(id){
                      case R.id.about:
+                         getNavigation().addFragment(AboutFragment.newInstance(),true);
                          Toast.makeText(getApplicationContext(),"About...", Toast.LENGTH_SHORT).show();  ;
                          return true;
                      case R.id.action_main:
-                         addFragment(NotesTitleFragment.newInstance());
-                         FragmentManager fragmentManager = getSupportFragmentManager()   ;
-                         fragmentManager.popBackStackImmediate()    ;
+                         getNavigation().addFragment(NotesTitleFragment.newInstance(), false);
+                         getNavigation().clearBackStack();
                          return true;
                      case R.id.action_history:
                          Toast.makeText(getApplicationContext(),"History", Toast.LENGTH_SHORT).show();  ;
@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar)    ;
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         return toolbar  ;
     }
 
@@ -120,6 +122,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public Navigation getNavigation(){
+        return navigation   ;
+    }
+
+    public Publisher getPublisher() {
+        return publisher    ;
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.profitsw2000;
+package ru.profitsw2000.fragments;
 
 import android.os.Bundle;
 
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import ru.profitsw2000.data.MyNotes;
 import ru.profitsw2000.notes.R;
 
 public class NoteTextFragment extends Fragment {
@@ -39,13 +43,14 @@ public class NoteTextFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_note_text, container, false);
 
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy")  ;
         TextView description = view.findViewById(R.id.description)  ;
         TextView date = view.findViewById(R.id.date)  ;
         TextView text = view.findViewById(R.id.text)  ;
 
         if (currentNote != null) {
             description.setText(currentNote.getDescription());
-            date.setText(currentNote.getDate());
+            date.setText(dateFormat.format(currentNote.getDate()));
             text.setText(currentNote.getText());
         }
 

@@ -1,16 +1,18 @@
-package ru.profitsw2000;
+package ru.profitsw2000.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Date;
 
 public class MyNotes implements Parcelable {
     private String title    ;
     private int picture ;
     private String description  ;
-    private String date ;
+    private Date date ;
     private String text ;
 
-    public MyNotes(String title, int picture, String description, String date, String text) {
+    public MyNotes(String title, int picture, String description, Date date, String text) {
         this.title = title;
         this.picture = picture  ;
         this.description = description;
@@ -22,7 +24,7 @@ public class MyNotes implements Parcelable {
         title = in.readString();
         picture = in.readInt();
         description = in.readString();
-        date = in.readString();
+        date = new Date(in.readLong());
         text = in.readString();
     }
 
@@ -50,7 +52,7 @@ public class MyNotes implements Parcelable {
         return description;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -68,7 +70,7 @@ public class MyNotes implements Parcelable {
         dest.writeString(title);
         dest.writeInt(picture);
         dest.writeString(description);
-        dest.writeString(date);
+        dest.writeLong(date.getTime());
         dest.writeString(text);
     }
 }

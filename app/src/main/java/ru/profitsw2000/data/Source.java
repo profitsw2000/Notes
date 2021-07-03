@@ -1,9 +1,20 @@
-package ru.profitsw2000;
+package ru.profitsw2000.data;
 
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ru.profitsw2000.notes.R;
@@ -18,15 +29,17 @@ public class Source implements CardSource {
         this.resources = resources;
     }
 
-    public Source init(){
+    public Source init() throws ParseException {
         String[] titles = resources.getStringArray(R.array.notes_title);
         int[] pictures = getImageArray();
         String[] descriptions = resources.getStringArray(R.array.notes_description) ;
         String[] dates = resources.getStringArray(R.array.notes_date) ;
         String[] text = resources.getStringArray(R.array.notes_text)    ;
+        Date[] dates1 = new Date[dates.length];
 
         for (int i = 0; i < titles.length; i++) {
-            dataSource.add(new MyNotes(titles[i], pictures[i], descriptions[i], dates[i], text[i]));
+            dates1[i] = new SimpleDateFormat("dd/MM/yyyy").parse(dates[i])  ;
+            dataSource.add(new MyNotes(titles[i], pictures[i], descriptions[i], dates1[i], text[i]));
         }
         return this;
     }
@@ -49,4 +62,25 @@ public class Source implements CardSource {
     public int size(){
         return dataSource.size();
     }
+
+    @Override
+    public void deleteNote(int position) {
+        dataSource.remove(position) ;
+    }
+
+    @Override
+    public void updateNote(int position, MyNotes myNotes) {
+        dataSource.set(position, myNotes);
+    }
+
+    @Override
+    public void addNote(MyNotes myNotes) {
+        dataSource.add(myNotes) ;
+    }
+
+    @Override
+    public void clearNote() {
+        dataSource.clear();
+    }
+
 }
