@@ -17,14 +17,19 @@ import ru.profitsw2000.notes.R;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
+
     private CardSource cardSource   ;
     private OnItemClickListener itemClickListener   ;
     private final Fragment fragment ;
     private int menuPosition    ;
 
-    public NotesAdapter(CardSource cardSource, Fragment fragment) {
-        this.cardSource = cardSource;
+    public NotesAdapter(Fragment fragment) {
         this.fragment = fragment;
+    }
+
+    public void setDataSource(CardSource cardSource) {
+        this.cardSource = cardSource    ;
+        notifyDataSetChanged();
     }
 
     @Override

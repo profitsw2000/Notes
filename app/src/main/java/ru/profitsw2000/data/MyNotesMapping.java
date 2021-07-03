@@ -1,6 +1,6 @@
 package ru.profitsw2000.data;
 
-import java.security.Timestamp;
+import com.google.firebase.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public class MyNotesMapping {
         MyNotes answer = new MyNotes((String) doc.get(Fields.TITLE),
                 PictureIndexConverter.getPictureByIndex((int) indexPic),
                 (String) doc.get(Fields.DESCRIPTION),
-                timeStamp.getTimestamp(),
+                timeStamp.toDate(),
                 (String) doc.get(Fields.TEXT));
         answer.setId(id);
         return answer;

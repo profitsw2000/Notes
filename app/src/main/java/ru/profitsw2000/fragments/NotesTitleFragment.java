@@ -28,6 +28,8 @@ import java.util.Date;
 
 import ru.profitsw2000.MainActivity;
 import ru.profitsw2000.data.CardSource;
+import ru.profitsw2000.data.CardSourceResponse;
+import ru.profitsw2000.data.FirebaseSource;
 import ru.profitsw2000.data.MyNotes;
 import ru.profitsw2000.data.NotesAdapter;
 import ru.profitsw2000.data.Source;
@@ -44,7 +46,7 @@ public class NotesTitleFragment extends Fragment {
     private NotesAdapter adapter    ;
     private Navigation navigation;
     private Publisher publisher;
-    private boolean moveToLastPosition;
+    private boolean moveToFirstPosition;
 
 
     public static NotesTitleFragment newInstance() {
@@ -52,25 +54,24 @@ public class NotesTitleFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        try {
-            data = new Source(getResources()).init() ;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notes_title, container, false);
+        initRecyclerView(view)  ;
 
         setHasOptionsMenu(true);
-        recyclerView = view.findViewById(R.id.recycler_notes)  ;
-        initRecyclerView(recyclerView, data)  ;
+        try {
+            data = new FirebaseSource().init(new CardSourceResponse() {
+                @Override
+                public void initialized(CardSource cardSource) {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        adapter.setDataSource(data);
         return view ;
     }
 
@@ -89,21 +90,23 @@ public class NotesTitleFragment extends Fragment {
         super.onDetach();
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, CardSource data) {
+    private void initRecyclerView(View view) {
+
+        recyclerView = view.findViewById(R.id.recycler_notes)   ;
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext())   ;
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new NotesAdapter(data, this) ;
+        adapter = new NotesAdapter(this) ;
         recyclerView.setAdapter(adapter);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL)    ;
         itemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
 
-        if (moveToLastPosition){
-            recyclerView.smoothScrollToPosition(data.size() - 1);
-            moveToLastPosition = false;
+        if (moveToFirstPosition){
+            recyclerView.smoothScrollToPosition(0);
+            moveToFirstPosition = false;
         }
 
         adapter.SetOnItemClickListener(new NotesAdapter.OnItemClickListener() {
@@ -141,7 +144,7 @@ public class NotesTitleFragment extends Fragment {
                     public void updateNotes(MyNotes myNotes) {
                         data.addNote(myNotes);
                         adapter.notifyItemInserted(data.size() - 1);
-                        moveToLastPosition = true;
+                        moveToFirstPosition = true;
                     }
                 });
                 return true ;
