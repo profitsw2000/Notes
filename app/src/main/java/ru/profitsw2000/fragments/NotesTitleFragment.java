@@ -104,8 +104,8 @@ public class NotesTitleFragment extends Fragment {
         itemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
 
-        if (moveToFirstPosition){
-            recyclerView.smoothScrollToPosition(0);
+        if (moveToFirstPosition && data.size() > 0){
+            recyclerView.scrollToPosition(0);
             moveToFirstPosition = false;
         }
 
