@@ -152,8 +152,7 @@ public class NotesTitleFragment extends Fragment {
                 });
                 return true ;
             case R.id.action_clear:
-                data.clearNote();
-                adapter.notifyDataSetChanged();
+                if (data.size() > 0) clearNotesDialog()  ;
                 return true ;
         }
         return super.onOptionsItemSelected(item)    ;
@@ -193,7 +192,7 @@ public class NotesTitleFragment extends Fragment {
 
     @SuppressLint("ResourceAsColor")
     public void deleteNoteDialog(int position){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme)    ;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())    ;
         builder.setTitle(R.string.delete_note_title).
                 setMessage(R.string.delete_question).
                 setNegativeButton(R.string.delete_cancel,
@@ -209,6 +208,32 @@ public class NotesTitleFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 data.deleteNote(position);
                                 adapter.notifyItemRemoved(position);
+                            }
+                        });
+        AlertDialog alertDialog = builder.create()  ;
+        alertDialog.show();
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(R.color.black);
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(R.color.black);
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void clearNotesDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())    ;
+        builder.setTitle(R.string.clear_dialog_title).
+                setMessage(R.string.clear_question).
+                setNegativeButton(R.string.delete_cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getActivity(), "Clear canceled", Toast.LENGTH_SHORT).show();
+                            }
+                        }).
+                setPositiveButton(R.string.clear_cofirm,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                data.clearNote();
+                                adapter.notifyDataSetChanged();
                             }
                         });
         AlertDialog alertDialog = builder.create()  ;

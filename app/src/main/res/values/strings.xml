@@ -22,4 +22,7 @@
     <string name="delete_question">Are you sure you want to delete this note?</string>
     <string name="delete_cancel">Cancel</string>
     <string name="delete_confirm">Delete</string>
+    <string name="clear_dialog_title">Clear all notes</string>
+    <string name="clear_question">Are you sure you want to clear all notes?</string>
+    <string name="clear_cofirm">Clear</string>
 </resources>
