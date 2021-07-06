@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                  switch(id){
                      case R.id.about:
-                         getNavigation().addFragment(AboutFragment.newInstance(),true);
-                         Toast.makeText(getApplicationContext(),"About...", Toast.LENGTH_SHORT).show();  ;
+                         getNavigation().addFragment(AboutFragment.newInstance(),true);;
                          return true;
                      case R.id.action_main:
                          getNavigation().addFragment(NotesTitleFragment.newInstance(), false);

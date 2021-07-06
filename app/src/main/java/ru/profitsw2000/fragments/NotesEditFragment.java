@@ -19,6 +19,7 @@ import java.util.Date;
 
 import ru.profitsw2000.MainActivity;
 import ru.profitsw2000.data.MyNotes;
+import ru.profitsw2000.data.PictureIndexConverter;
 import ru.profitsw2000.nav.Publisher;
 import ru.profitsw2000.notes.R;
 
@@ -115,15 +116,15 @@ public class NotesEditFragment extends Fragment {
         String text = this.text.getText().toString()    ;
 
         Date date = getDateFromDatePicker() ;
-        int picture ;
 
         if (myNotes != null) {
-            picture = myNotes.getPicture()  ;
+            MyNotes answer = new MyNotes(title, myNotes.getPicture(), description, date, text)  ;
+            answer.setId(myNotes.getId());
+            return answer   ;
         } else {
-            picture = R.drawable.code   ;
+            int picture = PictureIndexConverter.getPictureByIndex(PictureIndexConverter.randomPictureIndex());
+            return new MyNotes(title, picture, description, date, text) ;
         }
-
-        return new MyNotes(title, picture, description, date, text)  ;
     }
 
     private void initDatePicker(Date date) {
